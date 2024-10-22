@@ -17,33 +17,40 @@ def return_dataframe(token):
 
 
 today = datetime.datetime.now()
-yesterday = today - datetime.timedelta(days=1)
+yesterday = today - datetime.timedelta(days=3)
 yesterday_unix_timestamp = int(yesterday.timestamp()) * 1000
 
 # downloading the songs played yesterday
 headers = return_dataframe(token)
 url = f"https://api.spotify.com/v1/me/player/recently-played?after={yesterday_unix_timestamp}"
 r = requests.get(url, headers = headers)
-data = r.json()
-song_names = []
-artist_names = []
-played_at_list = []
-timestamps = []
+# Check if the request was successful
+if r.status_code == 200:
+    data = r.json()
+    if 'items' in data:
+        song_names = []
+        artist_names = []
+        played_at_list = []
+        timestamps = []
 
-# Extracting the relevant piece of data from the json object
-for song in data['items']:
-    song_names.append(song['track']['name'])
-    artist_names.append(song['track']['album']['artist'][0]['name'])
-    played_at_list.append(song['played_at'])
-    timestamps.append(song['played_at'][0:10])
+        # Extracting the relevant piece of data from the json object
+        for song in data['items']:
+         song_names.append(song['track']['name'])
+         artist_names.append(song['track']['album']['artist'][0]['name'])
+         played_at_list.append(song['played_at'])
+         timestamps.append(song['played_at'][0:10])
 
-# Creating a dictionary to be converted to a Dataframe
-song_dict = {
-    'song_name' : song_names,
-    'artist_name' : artist_names,
-    'played_at' : played_at_list,
-    'timestamp' : timestamps
-}
-songs = pd.DataFrame(song_dict)
-
+         # Creating a dictionary to be converted to a Dataframe
+        song_dict = {
+           'song_name' : song_names,
+           'artist_name' : artist_names,
+           'played_at' : played_at_list,
+           'timestamp' : timestamps
+        }
+        songs = pd.DataFrame(song_dict)
+        songs.head()
+    else:
+        print("No items found in the response data.")
+else:
+    print(f"Failed to fetch data: {r.status_code}")
 
