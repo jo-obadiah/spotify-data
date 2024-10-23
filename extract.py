@@ -11,7 +11,7 @@ def return_dataframe(token):
     input_variables = {
         "Accept": "application/json",
         "Content-Type": "application/json",
-        'Authorization': "bearer {token}".format(token = token) 
+        "Authorization": "bearer {token}".format(token = token) 
     }
     return input_variables
 
@@ -21,8 +21,12 @@ yesterday = today - datetime.timedelta(days=3)
 yesterday_unix_timestamp = int(yesterday.timestamp()) * 1000
 
 # downloading the songs played yesterday
-headers = return_dataframe(token)
-url = f"https://api.spotify.com/v1/me/player/recently-played?after={yesterday_unix_timestamp}"
+headers = {
+        "Accept" : "application/json",
+        "Content-Type" : "application/json",
+        "Authorization" : "Bearer {token}".format(token=token)
+    }
+url = "https://api.spotify.com/v1/me/player/recently-played?after={yesterday_unix_timestamp}"
 r = requests.get(url, headers = headers)
 # Check if the request was successful
 if r.status_code == 200:
