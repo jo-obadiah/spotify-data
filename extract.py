@@ -7,7 +7,7 @@ import datetime
 user_id = 'pharaoh'
 token = 'b61c32bd88d04ab8a01913c2b3e655b2'
 
-def return_dataframe(token):
+def return_dataframe(t):
     input_variables = {
         "Accept": "application/json",
         "Content-Type": "application/json",
@@ -21,11 +21,7 @@ yesterday = today - datetime.timedelta(days=3)
 yesterday_unix_timestamp = int(yesterday.timestamp()) * 1000
 
 # downloading the songs played yesterday
-headers = {
-        "Accept" : "application/json",
-        "Content-Type" : "application/json",
-        "Authorization" : "Bearer {token}".format(token=token)
-    }
+headers = return_dataframe()
 url = "https://api.spotify.com/v1/me/player/recently-played?after={yesterday_unix_timestamp}"
 r = requests.get(url, headers = headers)
 # Check if the request was successful
