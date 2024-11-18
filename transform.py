@@ -12,3 +12,9 @@ def data_quality(dataframe):
         raise Exception("primary key might contain duplicates")
     if dataframe.isnull.values.any():
         raise Exception('null values found')
+
+if __name__ == "__main__":
+
+    #Importing the songs_df from the Extract.py
+    dataframe = extract.return_dataframe()
+    data_quality(dataframe)
