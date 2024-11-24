@@ -13,12 +13,22 @@ DATABASE_LOCATION = "sqlite:///my_played_tracks.sqlite"
 
 if __name__ == "__main__":
 
-#Importing the songs_df from the Extract.py
+    #Importing the songs_df from the Extract.py
     load_df=extract.return_dataframe()
     if(transform.Data_Quality(load_df) == False):
         raise ("Failed at Data Validation")
 
-engine = sqlalchemy.create_engine(DATABASE_LOCATION)
-conn = sqlite3.connect('my_played_tracks.sqlite')
-cursor = conn.cursor()
+    engine = sqlalchemy.create_engine(DATABASE_LOCATION)
+    conn = sqlite3.connect('my_played_tracks.sqlite')
+    cursor = conn.cursor()
 
+    #SQL Query to Create Played Songs
+    sql_query_1 = """
+    CREATE TABLE IF NOT EXISTS my_played_tracks(
+        song_name VARCHAR(200),
+        artist_name VARCHAR(200),
+        played_at VARCHAR(200),
+        timestamp VARCHAR(200),
+        CONSTRAINT primary_key_constraint PRIMARY KEY (played_at)
+    )
+    """
