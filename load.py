@@ -34,3 +34,7 @@ if __name__ == "__main__":
     """
     cursor.execute(sql_query_1)
     print("Opened database successfully")
+    try:
+        load_df.to_sql("my_played_tracks", engine, index=False, if_exists='append')
+    except:
+        print("Data already exists in the database")
