@@ -32,3 +32,5 @@ if __name__ == "__main__":
         CONSTRAINT primary_key_constraint PRIMARY KEY (played_at)
     )
     """
+    cursor.execute(sql_query_1)
+    print("Opened database successfully")
